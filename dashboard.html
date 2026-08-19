@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authority Command Center - AquaShield</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1.2rem; }
+        .stat-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; display: flex; align-items: center; gap: 1rem; }
+        .stat-icon { width: 48px; height: 48px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+        .stat-info h4 { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); margin: 0; }
+        .stat-info p { font-size: 0.78rem; color: var(--text-secondary); margin: 0; }
+
+        .dashboard-tools { display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; flex-wrap: wrap; gap: 10px; }
+        .filter-group { display: flex; gap: 8px; }
+        .filter-btn { padding: 6px 14px; font-size: 0.8rem; border-radius: 20px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); cursor: pointer; }
+        .filter-btn.active { background: #0284c7; color: #fff; border-color: #0284c7; }
+
+        .broadcast-box { background: var(--card-bg); border: 1px dashed var(--border-color); border-radius: 10px; padding: 1rem; margin-top: 1.5rem; display: flex; gap: 10px; align-items: center; }
+        .broadcast-box input { flex-grow: 1; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-main); color: var(--text-primary); font-size: 0.85rem; }
+
+        .table-box { width: 100%; border-collapse: collapse; margin-top: 1rem; background: var(--card-bg); border-radius: 10px; overflow: hidden; border: 1px solid var(--border-color); }
+        .table-box th, .table-box td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.82rem; }
+        .table-box th { background: var(--bg-main); font-weight: 700; color: var(--text-primary); }
+        .action-btns { display: flex; gap: 6px; }
+    </style>
+</head>
+<body class="light-theme">
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-shield-halved logo-icon"></i>
+            <div>
+                <h1>AquaShield</h1>
+                <span>Municipal Dispatch Hub</span>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i> Home</a>
+            <button id="themeToggle" class="theme-btn" onclick="toggleTheme()"><i class="fa-solid fa-moon"></i></button>
+            <button class="auth-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Stat Analytics Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#e0f2fe; color:#0284c7;"><i class="fa-solid fa-clipboard-list"></i></div>
+                <div class="stat-info"><h4 id="statTotal">0</h4><p>Total Complaints</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#ffe4e6; color:#e11d48;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div class="stat-info"><h4 id="statCritical">0</h4><p>Critical Hazards</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#fef3c7; color:#d97706;"><i class="fa-solid fa-truck-field"></i></div>
+                <div class="stat-info"><h4 id="statDispatched">0</h4><p>Teams Dispatched</p></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#d1fae5; color:#059669;"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="stat-info"><h4 id="statResolved">0</h4><p>Resolved Issues</p></div>
+            </div>
+        </div>
+
+        <!-- Broadcast Advisory Box -->
+        <div class="broadcast-box">
+            <i class="fa-solid fa-bullhorn" style="color:#e11d48; font-size:1.2rem;"></i>
+            <input type="text" id="broadcastInput" placeholder="Broadcast Emergency Alert Banner to Citizens (e.g. Severe rainfall alert in Sector 4)...">
+            <button class="btn btn-blue" onclick="sendBroadcastAlert()"><i class="fa-solid fa-paper-plane"></i> Broadcast</button>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="dashboard-tools">
+            <h3 style="font-size:1.1rem; color:var(--text-primary);"><i class="fa-solid fa-list-check"></i> Live Dispatch Queue</h3>
+            <div class="filter-group">
+                <button class="filter-btn active" onclick="filterDashboard('all', this)">All</button>
+                <button class="filter-btn" onclick="filterDashboard('critical', this)">Critical</button>
+                <button class="filter-btn" onclick="filterDashboard('dispatched', this)">Dispatched</button>
+                <button class="filter-btn" onclick="filterDashboard('resolved', this)">Resolved</button>
+            </div>
+        </div>
+
+        <!-- Dynamic Complaints Table -->
+        <table class="table-box">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Category</th>
+                    <th>Depth</th>
+                    <th>GPS Location</th>
+                    <th>Dept. Tag</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="complaintsTableBody">
+                <!-- Dynamically Rendered -->
+            </tbody>
+        </table>
+    </main>
+
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('isOfficerLoggedIn') !== 'true') {
+                alert("Security Restriction: Please login through Officer Portal.");
+                window.location.href = 'officer-login.html';
+                return;
+            }
+            loadAuthorityDashboard();
+        });
+    </script>
+</body>
+</html>

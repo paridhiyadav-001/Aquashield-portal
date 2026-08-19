@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaShield - Integrated Safety Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-theme">
+
+    <!-- Top Navbar (Corner Profile Button Removed) -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-shield-halved logo-icon"></i>
+            <div>
+                <h1>AquaShield</h1>
+                <span>Integrated Safety Hub</span>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-item active"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="#" onclick="handleProtectedNavigation('report.html')" class="nav-item"><i class="fa-solid fa-circle-plus"></i> Register Hazard</a>
+            <button id="themeToggle" class="theme-btn" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fa-solid fa-moon" id="themeIcon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <header class="hero-section">
+        <div class="hero-card">
+            <div class="status-badge">
+                <span class="pulse-dot"></span> Unified Emergency Response & Navigation Active
+            </div>
+            <h2>One Portal for All Flood & Urban Waterlogging Services</h2>
+            <p>Choose your required service below: Navigate safe routes, register community waterlogging complaints, or access emergency first-responder tools.</p>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="container">
+        <div class="section-title">
+            <h3><i class="fa-solid fa-cubes"></i> Core Services & Portals</h3>
+        </div>
+
+        <!-- Core Services Grid -->
+        <div class="services-grid">
+            <div class="card card-green">
+                <div class="card-icon icon-green"><i class="fa-solid fa-route"></i></div>
+                <span class="sub-label">FOR CITIZENS</span>
+                <h4>Safe Route Finder</h4>
+                <p>Real-time flood-free road routes and waterlogging bypass guidance.</p>
+                <button class="btn btn-green" onclick="handleProtectedNavigation('gis-map.html')">Open GIS Route Map <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+
+            <div class="card card-blue">
+                <div class="card-icon icon-blue"><i class="fa-solid fa-bullhorn"></i></div>
+                <span class="sub-label">CITIZEN REPORTING</span>
+                <h4>Report Waterlogging</h4>
+                <p>File waterlogging, blocked drains, or open manhole hazards with live GPS.</p>
+                <button class="btn btn-blue" onclick="handleProtectedNavigation('report.html')"><i class="fa-solid fa-pen-to-square"></i> File Complaint</button>
+            </div>
+
+            <!-- Ambulance Card Fixed Here -->
+            <div class="card card-red">
+                <div class="card-icon icon-red"><i class="fa-solid fa-truck-medical"></i></div>
+                <span class="sub-label">EMERGENCY SERVICES</span>
+                <h4>Ambulance service</h4>
+                <p>Priority emergency route access & direct hotline connectivity.</p>
+                <button class="btn btn-red" onclick="window.location.href='ambulance.html'"><i class="fa-solid fa-truck-medical"></i>  Ambulance SOS</button>
+            </div>
+
+            <div class="card card-orange">
+                <div class="card-badge">Restricted</div>
+                <div class="card-icon icon-orange"><i class="fa-solid fa-user-shield"></i></div>
+                <span class="sub-label">MUNICIPAL / PWD</span>
+                <h4>Authority Portal</h4>
+                <p>Official personnel login for dispatch, GIS heatmaps & team assignments.</p>
+                <button class="btn btn-dark" onclick="window.location.href='officer-login.html'"><i class="fa-solid fa-lock"></i> Official Officer Login</button>
+            </div>
+        </div>
+
+        <!-- Smart System Specializations Section -->
+        <div class="section-title spec-title">
+            <h3><i class="fa-solid fa-microchip"></i> SMART SYSTEM SPECIALIZATIONS</h3>
+        </div>
+
+        <div class="specs-grid">
+            <div class="spec-card clickable-card" onclick="openSpecModal('gis')">
+                <div class="spec-icon"><i class="fa-solid fa-layer-group"></i></div>
+                <div class="spec-info">
+                    <h5>GIS Elevation Mapping</h5>
+                    <p>Low-lying zone detection.</p>
+                </div>
+            </div>
+
+            <div class="spec-card clickable-card" onclick="openSpecModal('ai_depth')">
+                <div class="spec-icon"><i class="fa-solid fa-brain"></i></div>
+                <div class="spec-info">
+                    <h5>AI Depth Classifier</h5>
+                    <p>Photo water level estimation.</p>
+                </div>
+            </div>
+
+            <div class="spec-card clickable-card" onclick="openSpecModal('voice_ai')">
+                <div class="spec-icon"><i class="fa-solid fa-microphone"></i></div>
+                <div class="spec-info">
+                    <h5>Dhwani Mitra Voice AI</h5>
+                    <p>Voice-based issue logging.</p>
+                </div>
+            </div>
+
+            <div class="spec-card clickable-card" onclick="openSpecModal('pwd_tag')">
+                <div class="spec-icon"><i class="fa-solid fa-building-flag"></i></div>
+                <div class="spec-info">
+                    <h5>Auto PWD / MC Tagging</h5>
+                    <p>Smart authority routing.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Overlay for Interactive Specializations -->
+    <div id="specModal" class="modal-overlay">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeSpecModal()">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col brand-col">
+                <div class="footer-brand">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h4>AquaShield AI</h4>
+                </div>
+                <p>Integrated urban flood intelligence, safe navigation routing, automated dispatch & emergency hotline portal.</p>
+                <span class="version-tag">v2.4 Production</span>
+            </div>
+
+            <div class="footer-col">
+                <h5><i class="fa-solid fa-phone"></i> EMERGENCY HOTLINES</h5>
+                <ul>
+                    <li><span>Flood Control Room:</span> <strong class="red-txt">1077</strong></li>
+                    <li><span>Municipal Helpline:</span> <strong class="blue-txt">1800-233-1100</strong></li>
+                    <li><span>Ambulance Services:</span> <strong class="blue-txt">108</strong></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5><i class="fa-solid fa-link"></i> QUICK PORTALS</h5>
+                <ul>
+                    <li><a href="#" onclick="handleProtectedNavigation('gis-map.html')" class="green-link">Safe Route GIS Map</a></li>
+                    <li><a href="#" onclick="handleProtectedNavigation('report.html')">Report Waterlogging Issue</a></li>
+                    <li><a href="#" onclick="handleProtectedNavigation('profile.html')">Citizen Profile & Complaints Log</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5><i class="fa-solid fa-user-lock"></i> RESTRICTED AREA</h5>
+                <p class="small-p">Requires Municipal Officer credentials.</p>
+                <button class="btn btn-restricted" onclick="window.location.href='officer-login.html'">
+                    <i class="fa-solid fa-lock"></i> Officer Restricted Login
+                </button>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 AquaShield AI — Smart Flood Intelligence & Emergency Response System</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

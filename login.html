@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - AquaShield Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-theme" style="display:flex; justify-content:center; align-items:center; min-height:100vh; background:var(--bg-main, #f8fafc);">
+
+    <div style="background:var(--card-bg, #ffffff); border:1px solid var(--border-color, #e2e8f0); padding:2rem; border-radius:14px; width:100%; max-width:420px; box-shadow:0 10px 25px rgba(0,0,0,0.08);">
+        
+        <!-- Header -->
+        <div style="text-align:center; margin-bottom:1.5rem;">
+            <h2 style="margin:0 0 6px 0; color:var(--text-primary, #0f172a); font-size:1.5rem;">
+                <i class="fa-solid fa-shield-halved" style="color:#0284c7;"></i> AquaShield Portal
+            </h2>
+            <span style="font-size:0.85rem; color:var(--text-secondary, #64748b);">Smart Urban Flood Emergency System</span>
+        </div>
+
+        <!-- Role Toggle Tabs -->
+        <div style="display:flex; gap:8px; margin-bottom:1.5rem; background:var(--bg-main, #f1f5f9); padding:4px; border-radius:8px;">
+            <button id="tabCitizen" type="button" style="flex:1; padding:8px; border:none; border-radius:6px; font-weight:bold; cursor:pointer; background:#0284c7; color:#fff;" onclick="switchRole('citizen')">
+                <i class="fa-solid fa-user"></i> Citizen OTP
+            </button>
+            <button id="tabOfficer" type="button" style="flex:1; padding:8px; border:none; border-radius:6px; font-weight:bold; cursor:pointer; background:transparent; color:var(--text-secondary);" onclick="switchRole('officer')">
+                <i class="fa-solid fa-user-shield"></i> Officer
+            </button>
+        </div>
+
+        <!-- 1. CITIZEN OTP SECTION -->
+        <div id="citizenSection">
+            <!-- Mobile Step -->
+            <div id="phoneStep">
+                <label style="font-size:0.85rem; font-weight:bold; color:var(--text-primary); display:block; margin-bottom:6px;">Mobile Number</label>
+                <div style="display:flex; gap:6px; margin-bottom:1rem;">
+                    <span style="padding:10px; background:var(--bg-main); border:1px solid var(--border-color); border-radius:6px; font-size:0.9rem; color:var(--text-secondary);">+91</span>
+                    <input type="tel" id="mobileInput" maxlength="10" placeholder="Enter 10-digit mobile" style="flex:1; padding:10px; border-radius:6px; border:1px solid var(--border-color); font-size:0.95rem;">
+                </div>
+                <button type="button" class="btn btn-blue" style="width:100%; padding:11px; font-weight:bold; font-size:1rem; cursor:pointer;" onclick="sendOTP()">
+                    <i class="fa-solid fa-paper-plane"></i> Send OTP
+                </button>
+            </div>
+
+            <!-- OTP Input Step (Hidden Initially) -->
+            <div id="otpStep" style="display:none;">
+                <div style="background:#e0f2fe; color:#0369a1; padding:8px 12px; border-radius:6px; font-size:0.82rem; margin-bottom:1rem;">
+                    <i class="fa-solid fa-circle-info"></i> Demo OTP sent to <strong id="sentMobileTxt">+91 XXXXX-XXXXX</strong>. Use OTP: <strong>1234</strong>
+                </div>
+                <label style="font-size:0.85rem; font-weight:bold; color:var(--text-primary); display:block; margin-bottom:6px;">Enter 4-Digit OTP</label>
+                <input type="text" id="otpInput" maxlength="4" placeholder="e.g. 1234" style="width:100%; padding:10px; border-radius:6px; border:1px solid var(--border-color); font-size:1.2rem; letter-spacing:8px; text-align:center; margin-bottom:1rem; box-sizing:border-box;">
+                
+                <button type="button" class="btn btn-green" style="width:100%; padding:11px; font-weight:bold; font-size:1rem; cursor:pointer;" onclick="verifyOTP()">
+                    <i class="fa-solid fa-circle-check"></i> Verify & Login
+                </button>
+                <button type="button" style="background:none; border:none; color:#0284c7; font-size:0.8rem; cursor:pointer; width:100%; margin-top:10px;" onclick="resetOTPStep()">Change Mobile Number</button>
+            </div>
+        </div>
+
+        <!-- 2. OFFICER SECTION (Hidden Initially) -->
+        <div id="officerSection" style="display:none;">
+            <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:1rem;">Municipal & Emergency Response Officer Access</p>
+            
+            <label style="font-size:0.85rem; font-weight:bold; color:var(--text-primary); display:block; margin-bottom:6px;">Officer Badge / Security PIN</label>
+            <input type="password" id="officerPinInput" placeholder="Enter Security PIN (Demo: 1234)" style="width:100%; padding:10px; border-radius:6px; border:1px solid var(--border-color); text-align:center; font-size:1rem; margin-bottom:1rem; box-sizing:border-box;">
+            
+            <button type="button" class="btn btn-dark" style="width:100%; padding:11px; font-weight:bold; font-size:1rem; cursor:pointer;" onclick="officerLogin()">
+                <i class="fa-solid fa-user-shield"></i> Officer Login
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        function switchRole(role) {
+            const citizenSec = document.getElementById('citizenSection');
+            const officerSec = document.getElementById('officerSection');
+            const tabCitizen = document.getElementById('tabCitizen');
+            const tabOfficer = document.getElementById('tabOfficer');
+
+            if (role === 'citizen') {
+                citizenSec.style.display = 'block';
+                officerSec.style.display = 'none';
+                tabCitizen.style.background = '#0284c7';
+                tabCitizen.style.color = '#fff';
+                tabOfficer.style.background = 'transparent';
+                tabOfficer.style.color = 'var(--text-secondary)';
+            } else {
+                citizenSec.style.display = 'none';
+                officerSec.style.display = 'block';
+                tabOfficer.style.background = '#0f172a';
+                tabOfficer.style.color = '#fff';
+                tabCitizen.style.background = 'transparent';
+                tabCitizen.style.color = 'var(--text-secondary)';
+            }
+        }
+
+        function sendOTP() {
+            const mobile = document.getElementById('mobileInput').value.trim();
+            if (mobile.length < 10) {
+                alert("Please enter a valid 10-digit mobile number!");
+                return;
+            }
+
+            document.getElementById('sentMobileTxt').innerText = "+91 " + mobile;
+            document.getElementById('phoneStep').style.display = 'none';
+            document.getElementById('otpStep').style.display = 'block';
+        }
+
+        function resetOTPStep() {
+            document.getElementById('otpStep').style.display = 'none';
+            document.getElementById('phoneStep').style.display = 'block';
+        }
+
+        function verifyOTP() {
+            const otp = document.getElementById('otpInput').value.trim();
+            if (otp === '1234' || otp.length === 4) { // Demo check
+                localStorage.setItem('isCitizenLoggedIn', 'true');
+                
+                let target = sessionStorage.getItem('redirect_after_login') || 'gis-map.html';
+                sessionStorage.removeItem('redirect_after_login');
+                
+                window.location.replace(target);
+            } else {
+                alert("Invalid OTP! Try entering '1234'");
+            }
+        }
+
+        function officerLogin() {
+            const pin = document.getElementById('officerPinInput').value;
+            if (pin === '1234' || pin === '') {
+                localStorage.setItem('isOfficerLoggedIn', 'true');
+                window.location.replace('dashboard.html');
+            } else {
+                alert("Incorrect PIN! Demo PIN is '1234'");
+            }
+        }
+    </script>
+</body>
+</html>

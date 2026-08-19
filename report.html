@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Hazard - AquaShield</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-theme">
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fa-solid fa-shield-halved logo-icon"></i>
+            <div>
+                <h1>AquaShield</h1>
+                <span>Integrated Safety Hub</span>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="report.html" class="nav-item active"><i class="fa-solid fa-circle-plus"></i> Register Hazard</a>
+            <button id="themeToggle" class="theme-btn" onclick="toggleTheme()" title="Toggle Theme">
+                <i class="fa-solid fa-moon" id="themeIcon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container">
+        <div class="form-container">
+            <div class="form-header">
+                <h2><i class="fa-solid fa-triangle-exclamation"></i> Report Water Hazard</h2>
+                <p>Help local authorities and fellow citizens by logging real-time waterlogging or drainage issues.</p>
+            </div>
+
+            <form id="hazardForm" onsubmit="handleReportSubmit(event)">
+                <!-- Hazard Type -->
+                <div class="form-group">
+                    <label for="hazardType"><i class="fa-solid fa-list"></i> Hazard Category</label>
+                    <select id="hazardType" required>
+                        <option value="">Select Hazard Type</option>
+                        <option value="waterlogging">Severe Waterlogging</option>
+                        <option value="drain_overflow">Blocked Drain / Overflow</option>
+                        <option value="open_manhole">Open / Damaged Manhole</option>
+                        <option value="road_block">Submerged Road / Traffic Block</option>
+                    </select>
+                </div>
+
+                <!-- Estimated Depth -->
+                <div class="form-group">
+                    <label for="waterDepth"><i class="fa-solid fa-ruler-vertical"></i> Estimated Water Depth</label>
+                    <select id="waterDepth" required>
+                        <option value="ankle">Ankle Deep (Below 0.5 ft)</option>
+                        <option value="knee">Knee Deep (0.5 ft - 1.5 ft)</option>
+                        <option value="waist">Waist Deep (1.5 ft - 3 ft)</option>
+                        <option value="severe">Critical (Above 3 ft / Vehicle Submerged)</option>
+                    </select>
+                </div>
+
+                <!-- GPS Location Fetcher -->
+                <div class="form-group">
+                    <label><i class="fa-solid fa-location-crosshairs"></i> Location Coordinates</label>
+                    <div class="location-box">
+                        <input type="text" id="locationInput" placeholder="Click button to fetch GPS..." readonly required>
+                        <button type="button" class="btn btn-blue loc-btn" onclick="fetchLiveLocation()">
+                            <i class="fa-solid fa-location-dot"></i> Get Live GPS
+                        </button>
+                    </div>
+                    <small id="locationStatus" class="status-txt"></small>
+                </div>
+
+                <!-- Image Upload -->
+                <div class="form-group">
+                    <label for="hazardImage"><i class="fa-solid fa-camera"></i> Upload Photo (AI Depth Check)</label>
+                    <input type="file" id="hazardImage" accept="image/*" class="file-input">
+                </div>
+
+                <!-- Additional Details -->
+                <div class="form-group">
+                    <label for="description"><i class="fa-solid fa-comment-dots"></i> Additional Description</label>
+                    <textarea id="description" rows="3" placeholder="Mention nearby landmarks or specific road names..."></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-green submit-btn">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Hazard Report
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-bottom">
+            <p>© 2026 AquaShield AI — Smart Flood Intelligence & Emergency Response System</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

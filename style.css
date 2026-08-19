@@ -1,0 +1,390 @@
+/* ==========================================================================
+   AquaShield AI - Integrated Global & Responsive Stylesheet
+   ========================================================================== */
+
+/* 1. ROOT VARIABLES & THEMES */
+:root {
+    --bg-main: #f8fafc;
+    --card-bg: #ffffff;
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --border-color: #e2e8f0;
+    
+    --primary-blue: #0284c7;
+    --accent-green: #16a34a;
+    --accent-red: #dc2626;
+    --accent-orange: #ea580c;
+    --dark-bg: #0f172a;
+    
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+    --shadow-md: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.dark-theme {
+    --bg-main: #0b0f19;
+    --card-bg: #1e293b;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --border-color: #334155;
+}
+
+/* 2. BASE RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    line-height: 1.5;
+    transition: background-color 0.3s, color 0.3s;
+    overflow-x: hidden;
+}
+
+/* 3. NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    font-size: 1.8rem;
+    color: var(--primary-blue);
+}
+
+.nav-brand h1 {
+    font-size: 1.25rem;
+    line-height: 1.1;
+}
+
+.nav-brand span {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    transition: 0.2s;
+}
+
+.nav-item.active, .nav-item:hover {
+    color: var(--primary-blue);
+    background: rgba(2, 132, 199, 0.1);
+}
+
+.theme-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: var(--text-primary);
+}
+
+/* 4. HERO SECTION */
+.hero-section {
+    padding: 2rem 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero-card {
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+    color: #fff;
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.2);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #22c55e;
+}
+
+.hero-card h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.8rem;
+}
+
+.hero-card p {
+    opacity: 0.9;
+    max-width: 700px;
+    font-size: 0.95rem;
+}
+
+/* 5. MAIN CONTAINER & GRIDS */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem 3rem 1.5rem;
+}
+
+.section-title {
+    margin: 2rem 0 1rem 0;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.sub-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 0.5rem;
+}
+
+.card h4 {
+    margin: 0.2rem 0 0.5rem 0;
+    font-size: 1.15rem;
+}
+
+.card p {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+    flex: 1;
+}
+
+.card-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.icon-green { background: #dcfce7; color: #16a34a; }
+.icon-blue { background: #e0f2fe; color: #0284c7; }
+.icon-red { background: #fee2e2; color: #dc2626; }
+.icon-orange { background: #ffedd5; color: #ea580c; }
+
+.btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: 0.2s;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.btn-green { background: var(--accent-green); color: #fff; }
+.btn-blue { background: var(--primary-blue); color: #fff; }
+.btn-red { background: var(--accent-red); color: #fff; }
+.btn-dark { background: var(--dark-bg); color: #fff; }
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+/* 6. SPECIALIZATIONS GRID */
+.specs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.spec-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.spec-icon {
+    font-size: 1.4rem;
+    color: var(--primary-blue);
+}
+
+.spec-info h5 {
+    font-size: 0.9rem;
+    margin-bottom: 2px;
+}
+
+.spec-info p {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+/* 7. FOOTER */
+.footer {
+    background: var(--card-bg);
+    border-top: 1px solid var(--border-color);
+    padding: 3rem 1.5rem 1rem 1.5rem;
+}
+
+.footer-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-col h5 {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 8px; font-size: 0.85rem; }
+.footer-col a { color: var(--primary-blue); text-decoration: none; }
+
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    padding-top: 1.5rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   8. MOBILE RESPONSIVE MEDIA QUERIES (Mobile-Friendly Optimizations)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    /* Navbar Scaling for Mobile */
+    .navbar {
+        padding: 0.8rem 1rem;
+    }
+
+    .nav-brand h1 {
+        font-size: 1.1rem;
+    }
+
+    .nav-brand span {
+        display: none; /* Hide subtitle on tiny screens */
+    }
+
+    .nav-links {
+        gap: 0.5rem;
+    }
+
+    .nav-item {
+        padding: 6px 8px;
+        font-size: 0.8rem;
+    }
+
+    /* Hero Section Scaling */
+    .hero-section {
+        padding: 1rem;
+    }
+
+    .hero-card {
+        padding: 1.5rem 1.2rem;
+        border-radius: var(--radius-md);
+    }
+
+    .hero-card h2 {
+        font-size: 1.35rem;
+    }
+
+    .hero-card p {
+        font-size: 0.85rem;
+    }
+
+    .status-badge {
+        font-size: 0.72rem;
+    }
+
+    /* Grids Stack Vertically on Mobile */
+    .container {
+        padding: 0.5rem 1rem 2rem 1rem;
+    }
+
+    .services-grid {
+        grid-template-columns: 1fr; /* Single column on mobile */
+        gap: 1rem;
+    }
+
+    .specs-grid {
+        grid-template-columns: 1fr; /* Single column on mobile */
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    /* Touch-friendly Big Buttons */
+    .btn {
+        padding: 14px;
+        font-size: 0.95rem;
+    }
+}
