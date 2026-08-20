@@ -6,10 +6,180 @@
     <title>AquaShield - Integrated Safety Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Live Stats Section Styling */
+        .stats-container {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 15px;
+            border-left: 4px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stat-card.total { border-left-color: #0284c7; }
+        .stat-card.critical { border-left-color: #e11d48; }
+        .stat-card.dispatched { border-left-color: #d97706; }
+        .stat-card.resolved { border-left-color: #059669; }
+
+        .stat-info h4 {
+            margin: 0;
+            font-size: 0.8rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-info span {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .stat-icon {
+            font-size: 1.8rem;
+            opacity: 0.8;
+        }
+
+        /* Area Breakdown List */
+        .area-breakdown {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed #e2e8f0;
+        }
+
+        .area-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .area-item {
+            background: #f1f5f9;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .badge-solved { background: #dcfce7; color: #15803d; padding: 2px 8px; border-radius: 12px; font-weight: 600; font-size: 0.75rem; }
+        .badge-pending { background: #fee2e2; color: #b91c1c; padding: 2px 8px; border-radius: 12px; font-weight: 600; font-size: 0.75rem; }
+
+        /* Floating Widget Button */
+        .aqua-assistant-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #0284c7;
+            color: #ffffff;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+        }
+
+        .aqua-assistant-btn:hover {
+            background: #0369a1;
+            transform: translateY(-2px);
+        }
+
+        /* Modal / Pop-up Card */
+        .aqua-widget-card {
+            position: fixed;
+            bottom: 85px;
+            right: 25px;
+            width: 330px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        .widget-header {
+            background: #0f172a;
+            color: #ffffff;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .widget-header h4 {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .widget-body { padding: 16px; background: #f8fafc; }
+        .widget-subtitle { font-size: 0.8rem; color: #64748b; margin-bottom: 12px; font-weight: 500; }
+
+        .action-chips-grid { display: flex; flex-direction: column; gap: 8px; }
+        .chip-btn {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 0.83rem;
+            color: #1e293b;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+
+        .chip-btn:hover { border-color: #0284c7; background: #f0f9ff; color: #0284c7; }
+        .response-view { display: none; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; margin-top: 10px; font-size: 0.82rem; color: #334155; line-height: 1.5; }
+        .back-link { color: #0284c7; font-size: 0.78rem; font-weight: 600; cursor: pointer; display: inline-block; margin-bottom: 8px; }
+
+        @media (max-width: 768px) {
+            .aqua-widget-card { width: 300px; right: 15px; bottom: 80px; }
+            .aqua-assistant-btn { right: 15px; bottom: 20px; }
+        }
+    </style>
 </head>
 <body class="light-theme">
 
-    <!-- Top Navbar (Corner Profile Button Removed) -->
+    <!-- Top Navbar -->
     <nav class="navbar">
         <div class="nav-brand">
             <i class="fa-solid fa-shield-halved logo-icon"></i>
@@ -40,6 +210,57 @@
 
     <!-- Main Content Container -->
     <main class="container">
+
+        <!-- 📊 LIVE COMPLAINTS RESOLUTION STATS SECTION -->
+        <div class="stats-container">
+            <div class="section-title" style="margin-bottom:10px;">
+                <h3><i class="fa-solid fa-chart-pie" style="color:#0284c7;"></i> Live Complaint Resolution Tracker</h3>
+            </div>
+
+            <!-- Authority Style 4 Stats Counters -->
+            <div class="stats-grid">
+                <div class="stat-card total">
+                    <div class="stat-info">
+                        <h4>Total Complaints</h4>
+                        <span id="mainStatTotal">0</span>
+                    </div>
+                    <i class="fa-solid fa-clipboard-list stat-icon" style="color:#0284c7;"></i>
+                </div>
+
+                <div class="stat-card critical">
+                    <div class="stat-info">
+                        <h4>Critical Hazards</h4>
+                        <span id="mainStatCritical">0</span>
+                    </div>
+                    <i class="fa-solid fa-triangle-exclamation stat-icon" style="color:#e11d48;"></i>
+                </div>
+
+                <div class="stat-card dispatched">
+                    <div class="stat-info">
+                        <h4>Teams Dispatched</h4>
+                        <span id="mainStatDispatched">0</span>
+                    </div>
+                    <i class="fa-solid fa-truck-field stat-icon" style="color:#d97706;"></i>
+                </div>
+
+                <div class="stat-card resolved">
+                    <div class="stat-info">
+                        <h4>Resolved Issues</h4>
+                        <span id="mainStatResolved">0</span>
+                    </div>
+                    <i class="fa-solid fa-circle-check stat-icon" style="color:#059669;"></i>
+                </div>
+            </div>
+
+            <!-- Area Wise Status -->
+            <div class="area-breakdown">
+                <h5 style="margin:0 0 10px 0; font-size:0.85rem; color:#475569;"><i class="fa-solid fa-location-dot"></i> Area-wise Resolution Status:</h5>
+                <div class="area-grid" id="areaGrid">
+                    <!-- Area items injected dynamically -->
+                </div>
+            </div>
+        </div>
+
         <div class="section-title">
             <h3><i class="fa-solid fa-cubes"></i> Core Services & Portals</h3>
         </div>
@@ -62,13 +283,12 @@
                 <button class="btn btn-blue" onclick="handleProtectedNavigation('report.html')"><i class="fa-solid fa-pen-to-square"></i> File Complaint</button>
             </div>
 
-            <!-- Ambulance Card Fixed Here -->
             <div class="card card-red">
                 <div class="card-icon icon-red"><i class="fa-solid fa-truck-medical"></i></div>
                 <span class="sub-label">EMERGENCY SERVICES</span>
                 <h4>Ambulance service</h4>
                 <p>Priority emergency route access & direct hotline connectivity.</p>
-                <button class="btn btn-red" onclick="window.location.href='ambulance.html'"><i class="fa-solid fa-truck-medical"></i>  Ambulance SOS</button>
+                <button class="btn btn-red" onclick="window.location.href='ambulance.html'"><i class="fa-solid fa-truck-medical"></i> Ambulance SOS</button>
             </div>
 
             <div class="card card-orange">
@@ -100,14 +320,6 @@
                 <div class="spec-info">
                     <h5>AI Depth Classifier</h5>
                     <p>Photo water level estimation.</p>
-                </div>
-            </div>
-
-            <div class="spec-card clickable-card" onclick="openSpecModal('voice_ai')">
-                <div class="spec-icon"><i class="fa-solid fa-microphone"></i></div>
-                <div class="spec-info">
-                    <h5>Dhwani Mitra Voice AI</h5>
-                    <p>Voice-based issue logging.</p>
                 </div>
             </div>
 
@@ -172,6 +384,162 @@
         </div>
     </footer>
 
+    <!-- Floating Trigger Button -->
+    <button class="aqua-assistant-btn" onclick="toggleAquaWidget()">
+        <i class="fa-solid fa-shield-halved"></i> Help & Quick Actions
+    </button>
+
+    <!-- Professional Service Card Widget -->
+    <div class="aqua-widget-card" id="aquaWidgetCard">
+        <div class="widget-header">
+            <h4><i class="fa-solid fa-circle-info" style="color:#38bdf8;"></i> AquaShield Help Desk</h4>
+            <i class="fa-solid fa-xmark" style="cursor:pointer; opacity:0.8;" onclick="toggleAquaWidget()"></i>
+        </div>
+
+        <div class="widget-body">
+            <div id="chipsMenuView">
+                <div class="widget-subtitle">Select an option for quick information:</div>
+                <div class="action-chips-grid">
+                    <button class="chip-btn" onclick="showOptionDetail('helpline')">
+                        <span>🚨 Emergency Helplines</span>
+                        <i class="fa-solid fa-chevron-right" style="font-size:0.7rem; color:#94a3b8;"></i>
+                    </button>
+                    <button class="chip-btn" onclick="showOptionDetail('shelter')">
+                        <span>🏫 Nearest Relief Centers</span>
+                        <i class="fa-solid fa-chevron-right" style="font-size:0.7rem; color:#94a3b8;"></i>
+                    </button>
+                    <button class="chip-btn" onclick="showOptionDetail('gis')">
+                        <span>🗺️ Safe Route Navigation</span>
+                        <i class="fa-solid fa-chevron-right" style="font-size:0.7rem; color:#94a3b8;"></i>
+                    </button>
+                    <button class="chip-btn" onclick="showOptionDetail('report')">
+                        <span>📢 Report Waterlogging Issue</span>
+                        <i class="fa-solid fa-chevron-right" style="font-size:0.7rem; color:#94a3b8;"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="response-view" id="responseView">
+                <span class="back-link" onclick="resetMenuView()"><i class="fa-solid fa-arrow-left"></i> Back to options</span>
+                <div id="responseContent"></div>
+            </div>
+        </div>
+    </div>
+
     <script src="app.js"></script>
+
+    <script>
+        function loadComplaintStats() {
+            let rawData = localStorage.getItem('complaints') || localStorage.getItem('aquaShieldComplaints');
+            let complaints = rawData ? JSON.parse(rawData) : [];
+
+            let total = complaints.length;
+            let critical = 0;
+            let dispatched = 0;
+            let resolved = 0;
+
+            let areaMap = {};
+
+            if (total > 0) {
+                complaints.forEach(c => {
+                    let status = (c.status || 'Pending').toLowerCase();
+                    
+                    if (status === 'critical') critical++;
+                    else if (status === 'dispatched') dispatched++;
+                    else if (status === 'resolved' || status === 'solved' || status === 'completed') resolved++;
+
+                    let areaName = c.area || c.location || c.address || 'General City Zone';
+                    if (!areaMap[areaName]) {
+                        areaMap[areaName] = { solved: 0, pending: 0 };
+                    }
+
+                    if (status === 'resolved' || status === 'solved' || status === 'completed') {
+                        areaMap[areaName].solved++;
+                    } else {
+                        areaMap[areaName].pending++;
+                    }
+                });
+            }
+
+            // Update Authority style counters
+            if (document.getElementById('mainStatTotal')) document.getElementById('mainStatTotal').innerText = total;
+            if (document.getElementById('mainStatCritical')) document.getElementById('mainStatCritical').innerText = critical;
+            if (document.getElementById('mainStatDispatched')) document.getElementById('mainStatDispatched').innerText = dispatched;
+            if (document.getElementById('mainStatResolved')) document.getElementById('mainStatResolved').innerText = resolved;
+
+            // Area Grid Build
+            let areaGridHTML = '';
+            if (total === 0) {
+                areaGridHTML = '<p style="color:#64748b; font-size:0.85rem; margin:5px 0;">Abhi koi active complaint registered nahi hai.</p>';
+            } else {
+                for (let area in areaMap) {
+                    let s = areaMap[area].solved;
+                    let p = areaMap[area].pending;
+                    areaGridHTML += `
+                        <div class="area-item">
+                            <strong>${area}</strong>
+                            <div>
+                                ${s > 0 ? `<span class="badge-solved">${s} Solved</span>` : ''}
+                                ${p > 0 ? `<span class="badge-pending">${p} Pending</span>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            document.getElementById('areaGrid').innerHTML = areaGridHTML;
+        }
+
+        document.addEventListener('DOMContentLoaded', loadComplaintStats);
+
+        function toggleAquaWidget() {
+            const card = document.getElementById('aquaWidgetCard');
+            card.style.display = (card.style.display === 'flex') ? 'none' : 'flex';
+            if (card.style.display === 'flex') resetMenuView();
+        }
+
+        function resetMenuView() {
+            document.getElementById('chipsMenuView').style.display = 'block';
+            document.getElementById('responseView').style.display = 'none';
+        }
+
+        function showOptionDetail(type) {
+            document.getElementById('chipsMenuView').style.display = 'none';
+            const view = document.getElementById('responseView');
+            const content = document.getElementById('responseContent');
+            view.style.display = 'block';
+
+            if (type === 'helpline') {
+                content.innerHTML = `
+                    <strong style="color:#0f172a; display:block; margin-bottom:6px;">🚨 Emergency Helpline Numbers</strong>
+                    <ul style="margin:0; padding-left:18px;">
+                        <li><strong>Disaster Management:</strong> 112</li>
+                        <li><strong>City Flood Control Room:</strong> 1077</li>
+                        <li><strong>Ambulance Service:</strong> 108</li>
+                    </ul>
+                `;
+            } else if (type === 'shelter') {
+                content.innerHTML = `
+                    <strong style="color:#0f172a; display:block; margin-bottom:6px;">🏫 Designated Relief Shelters</strong>
+                    <ul style="margin:0; padding-left:18px;">
+                        <li><strong>Zone 1:</strong> Community Hall, Old Palasia</li>
+                        <li><strong>Zone 2:</strong> Indoor Stadium, Race Course</li>
+                    </ul>
+                `;
+            } else if (type === 'gis') {
+                content.innerHTML = `
+                    <strong style="color:#0f172a; display:block; margin-bottom:6px;">🗺️ Flood-Safe GIS Navigation</strong>
+                    <p style="margin:0 0 8px 0;">Use our real-time interactive GIS map to generate safe travel routes.</p>
+                    <a href="gis-map.html" style="color:#0284c7; font-weight:bold; text-decoration:none;">Go to GIS Navigation Map &rarr;</a>
+                `;
+            } else if (type === 'report') {
+                content.innerHTML = `
+                    <strong style="color:#0f172a; display:block; margin-bottom:6px;">📢 Report Waterlogging Issue</strong>
+                    <p style="margin:0 0 8px 0;">Register waterlogging complaints directly from the portal.</p>
+                    <a href="report.html" style="color:#0284c7; font-weight:bold; text-decoration:none;">Go to Report Hazard Page &rarr;</a>
+                `;
+            }
+        }
+    </script>
 </body>
 </html>

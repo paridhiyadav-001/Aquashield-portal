@@ -121,6 +121,11 @@ function handleReportSubmit(event) {
     alert("Complaint Registered Successfully! Transmitted to Municipal Officer Dashboard.");
     document.getElementById('hazardForm').reset();
     document.getElementById('locationStatus').innerText = "";
+    
+    // Refresh stats if on home page
+    if (typeof loadComplaintStats === 'function') {
+        loadComplaintStats();
+    }
 }
 
 // ==================== 5. ADVANCED DASHBOARD LOGIC ====================
@@ -133,7 +138,7 @@ function loadAuthorityDashboard() {
     let complaints = JSON.parse(localStorage.getItem('aqua_complaints') || '[]');
 
     // 1. Calculate Real-time Stats
-    let criticalCount = complaints.filter(c => c.depth === 'waist' || c.depth === 'severe' || c.depth === 'knee').length;
+    let criticalCount = complaints.filter(c => c.depth === 'waist' || c.depth === 'severe' || c.depth === 'knee' || (c.status && c.status.toLowerCase() === 'critical')).length;
     let dispatchedCount = complaints.filter(c => c.status === 'Dispatched').length;
     let resolvedCount = complaints.filter(c => c.status === 'Resolved').length;
 
@@ -150,7 +155,7 @@ function loadAuthorityDashboard() {
     // 2. Apply Filters
     let filteredData = complaints;
     if (currentFilter === 'critical') {
-        filteredData = complaints.filter(c => c.depth === 'waist' || c.depth === 'severe' || c.depth === 'knee');
+        filteredData = complaints.filter(c => c.depth === 'waist' || c.depth === 'severe' || c.depth === 'knee' || (c.status && c.status.toLowerCase() === 'critical'));
     } else if (currentFilter === 'dispatched') {
         filteredData = complaints.filter(c => c.status === 'Dispatched');
     } else if (currentFilter === 'resolved') {
@@ -205,6 +210,7 @@ function dispatchTeam(index) {
     localStorage.setItem('aqua_complaints', JSON.stringify(complaints));
     alert(`Emergency Rescue / Drainage Team Dispatched for Report ${complaints[index].id}!`);
     loadAuthorityDashboard();
+    if (typeof loadComplaintStats === 'function') loadComplaintStats();
 }
 
 function markResolved(index) {
@@ -212,6 +218,7 @@ function markResolved(index) {
     complaints[index].status = 'Resolved';
     localStorage.setItem('aqua_complaints', JSON.stringify(complaints));
     loadAuthorityDashboard();
+    if (typeof loadComplaintStats === 'function') loadComplaintStats();
 }
 
 function sendBroadcastAlert() {
@@ -298,12 +305,11 @@ function startVoiceRecognition() {
     const micBtn = document.getElementById('micBtn');
     if (!res) return;
 
-    // Check for Browser Web Speech API support
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (SpeechRecognition) {
         const recognition = new SpeechRecognition();
-        recognition.lang = 'hi-IN'; // Supports Hindi & English Speech
+        recognition.lang = 'hi-IN';
         recognition.interimResults = false;
 
         if (micBtn) micBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Listening... Speak Now!`;
@@ -348,3 +354,89 @@ function autoTagDepartment() {
         res.innerHTML = `<strong>Assigned Authority:</strong> <span style="color:#0284c7; font-weight:bold;">Municipal Corporation (MC)</span>`;
     }
 }
+
+// ==================== 7. HOME PAGE LIVE STATS TRACKER INTEGRATION ====================
+function loadComplaintStats() {
+    const mainTotal = document.getElementById('mainStatTotal');
+    const mainCrit = document.getElementById('mainStatCritical');
+    const mainDisp = document.getElementById('mainStatDispatched');
+    const mainRes = document.getElementById('mainStatResolved');
+    
+    const legacyTotal = document.getElementById('statTotal');
+    const legacySolved = document.getElementById('statSolved');
+    const legacyPending = document.getElementById('statPending');
+    
+    const areaGrid = document.getElementById('areaGrid');
+
+    let complaints = JSON.parse(localStorage.getItem('aqua_complaints') || '[]');
+
+    // Fallback demo data if no user complaint is registered yet
+    if (complaints.length === 0) {
+        complaints = [
+            { location: 'Zone 1 (Palasia)', status: 'Resolved', depth: 'low' },
+            { location: 'Zone 1 (Palasia)', status: 'Resolved', depth: 'knee' },
+            { location: 'Zone 2 (Vijay Nagar)', status: 'Dispatched', depth: 'waist' },
+            { location: 'Zone 2 (Vijay Nagar)', status: 'Pending', depth: 'low' },
+            { location: 'Zone 3 (Bhawarkua)', status: 'Pending', depth: 'severe' },
+            { location: 'Zone 4 (Rajwada)', status: 'Resolved', depth: 'low' }
+        ];
+    }
+
+    let total = complaints.length;
+    let critical = complaints.filter(c => c.depth === 'waist' || c.depth === 'severe' || c.depth === 'knee' || (c.status && c.status.toLowerCase() === 'critical')).length;
+    let dispatched = complaints.filter(c => c.status === 'Dispatched').length;
+    let resolved = complaints.filter(c => c.status === 'Resolved' || c.status === 'Solved').length;
+    let pending = total - resolved;
+
+    // 4 Authority Stats Cards Update
+    if (mainTotal) mainTotal.innerText = total;
+    if (mainCrit) mainCrit.innerText = critical;
+    if (mainDisp) mainDisp.innerText = dispatched;
+    if (mainRes) mainRes.innerText = resolved;
+
+    // Legacy Support (In case old IDs exist)
+    if (legacyTotal) legacyTotal.innerText = total;
+    if (legacySolved) legacySolved.innerText = resolved;
+    if (legacyPending) legacyPending.innerText = pending;
+
+    // Area Grid Update
+    if (areaGrid) {
+        let areaMap = {};
+        complaints.forEach(c => {
+            let areaName = c.location || 'Central City';
+            if (areaName.includes(',')) {
+                areaName = 'GPS Zone (' + areaName.split(',')[0].trim() + ')';
+            }
+            if (!areaMap[areaName]) {
+                areaMap[areaName] = { solved: 0, pending: 0 };
+            }
+            if (c.status === 'Resolved' || c.status === 'Solved') {
+                areaMap[areaName].solved++;
+            } else {
+                areaMap[areaName].pending++;
+            }
+        });
+
+        let areaGridHTML = '';
+        for (let area in areaMap) {
+            let s = areaMap[area].solved;
+            let p = areaMap[area].pending;
+            areaGridHTML += `
+                <div class="area-item">
+                    <strong>${area}</strong>
+                    <div>
+                        <span class="badge-solved">${s} Solved</span>
+                        ${p > 0 ? `<span class="badge-pending">${p} Pending</span>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+        areaGrid.innerHTML = areaGridHTML;
+    }
+}
+
+// Automatically sync on page load
+document.addEventListener('DOMContentLoaded', () => {
+    loadComplaintStats();
+    loadAuthorityDashboard();
+});
