@@ -113,19 +113,29 @@
             document.getElementById('phoneStep').style.display = 'block';
         }
 
-        function verifyOTP() {
-            const otp = document.getElementById('otpInput').value.trim();
-            if (otp === '1234' || otp.length === 4) { // Demo check
-                localStorage.setItem('isCitizenLoggedIn', 'true');
-                
-                let target = sessionStorage.getItem('redirect_after_login') || 'gis-map.html';
-                sessionStorage.removeItem('redirect_after_login');
-                
-                window.location.replace(target);
-            } else {
-                alert("Invalid OTP! Try entering '1234'");
-            }
-        }
+       function verifyOTP() {
+    const otp = document.getElementById('otpInput').value.trim();
+    const mobile = document.getElementById('mobileInput').value.trim();
+
+    if (otp === '1234' || otp.length === 4) { // Demo check
+        // Profile page ke liye User data save karein
+        const citizenUser = {
+            name: 'Citizen (' + (mobile ? mobile.slice(-4) : 'User') + ')',
+            email: mobile ? '+91 ' + mobile : 'user@aquashield.com',
+            isLoggedIn: true
+        };
+        localStorage.setItem('aqua_user', JSON.stringify(citizenUser));
+        localStorage.setItem('isCitizenLoggedIn', 'true');
+
+        // Target check: Jahan se user aaya tha (GIS, Report ya Profile) wahan bhej do
+        let target = sessionStorage.getItem('redirect_after_login') || 'profile.html';
+        sessionStorage.removeItem('redirect_after_login');
+
+        window.location.replace(target);
+    } else {
+        alert("Invalid OTP! Try entering '1234'");
+    }
+       }
 
         function officerLogin() {
             const pin = document.getElementById('officerPinInput').value;

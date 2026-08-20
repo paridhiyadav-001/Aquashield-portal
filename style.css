@@ -3,7 +3,7 @@
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. ROOT VARIABLES & THEMES
+   1. ROOT VARIABLES & THEMES (ORIGINAL COLORS)
    -------------------------------------------------------------------------- */
 :root {
     --bg-main: #f8fafc;
@@ -237,7 +237,7 @@ body {
 .icon-orange { background: #ffedd5; color: #ea580c; }
 
 /* --------------------------------------------------------------------------
-   6. STATS & ANALYTICAL CARDS (RESPONSIVE 4-STAT GRID)
+   6. STATS & ANALYTICAL CARDS
    -------------------------------------------------------------------------- */
 .stats-container, .stats-grid {
     display: grid;
@@ -268,7 +268,6 @@ body {
     margin-top: 4px;
 }
 
-/* Area Grid Item Styles */
 #areaGrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -427,7 +426,7 @@ body {
     padding: 12px 14px;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-sm);
-    font-size: 16px; /* Prevents auto-zoom on mobile safari/iOS */
+    font-size: 16px;
     background-color: var(--card-bg);
     color: var(--text-primary);
     box-sizing: border-box;
@@ -474,7 +473,7 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   10. TABLES (RESPONSIVE TABLE WRAPPER FOR MOBILE)
+   10. TABLES
    -------------------------------------------------------------------------- */
 .table-responsive {
     width: 100%;
@@ -489,7 +488,7 @@ table {
     width: 100%;
     border-collapse: collapse;
     background: var(--card-bg);
-    min-width: 600px; /* Ensures table doesn't shrink awkwardly on small screens */
+    min-width: 600px;
 }
 
 th, td {
@@ -582,17 +581,13 @@ th {
 /* ==========================================================================
    13. COMPREHENSIVE RESPONSIVE MEDIA QUERIES
    ========================================================================== */
-
-/* Tablet Screens (Max Width: 992px) */
 @media (max-width: 992px) {
     .stats-container, .stats-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2x2 Grid on tablets */
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
-/* Mobile Screens (Max Width: 768px) */
 @media (max-width: 768px) {
-    /* Navbar Scaling */
     .navbar {
         padding: 0.8rem 1rem;
     }
@@ -602,7 +597,7 @@ th {
     }
 
     .nav-brand span {
-        display: none; /* Hide subtitle on small screens */
+        display: none;
     }
 
     .nav-links {
@@ -614,7 +609,6 @@ th {
         font-size: 0.8rem;
     }
 
-    /* Hero Section Scaling */
     .hero-section {
         padding: 1rem;
     }
@@ -636,7 +630,6 @@ th {
         font-size: 0.72rem;
     }
 
-    /* Layout Grids */
     .container {
         padding: 0.5rem 1rem 2rem 1rem;
     }
@@ -648,7 +641,6 @@ th {
         gap: 1rem;
     }
 
-    /* Forms Responsiveness */
     .login-card, 
     .complaint-card, 
     .form-card, 
@@ -660,7 +652,6 @@ th {
         box-shadow: var(--shadow-sm);
     }
 
-    /* Touch-friendly Buttons */
     .btn, 
     .btn-primary, 
     .btn-submit {
@@ -669,10 +660,9 @@ th {
     }
 }
 
-/* Small Mobile Screens (Max Width: 520px) */
 @media (max-width: 520px) {
     .stats-container, .stats-grid {
-        grid-template-columns: 1fr 1fr; /* Clean 2x2 layout on mobile */
+        grid-template-columns: 1fr 1fr;
         gap: 8px;
     }
 

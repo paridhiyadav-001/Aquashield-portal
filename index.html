@@ -230,6 +230,14 @@
         </div>
     </nav>
 
+    <nav class="navbar">
+  <a href="index.html" class="nav-link">Home</a>
+  <!-- Naya Profile Button -->
+  <a href="profile.html" class="nav-link profile-btn">
+    <i class="fas fa-user"></i> My Profile / Complaints
+  </a>
+</nav>
+
     <!-- Hero Banner -->
     <header class="hero-section">
         <div class="hero-card">
@@ -284,58 +292,58 @@
             </div>
         </div>
 
-        <!-- 2. 📊 LIVE COMPLAINTS RESOLUTION STATS SECTION (Clean Horizontal Row) -->
-        <div class="stats-container" style="margin-top: 30px;">
-            <div class="stats-header">
-                <h3><i class="fa-solid fa-chart-pie" style="color:#0284c7;"></i> Live Complaint Resolution Tracker</h3>
-                <span style="font-size:0.75rem; color:#64748b; background:#f1f5f9; padding:4px 10px; border-radius:12px; font-weight:500;">
-                    <i class="fa-solid fa-arrows-rotate"></i> Real-time Sync
-                </span>
-            </div>
 
-            <!-- 4 Cards Horizontal Grid -->
-            <div class="stats-grid">
-                <div class="stat-card total">
-                    <div class="stat-info">
-                        <h4>Total Complaints</h4>
-                        <span id="mainStatTotal">0</span>
-                    </div>
-                    <i class="fa-solid fa-clipboard-list stat-icon" style="color:#0284c7;"></i>
-                </div>
-
-                <div class="stat-card critical">
-                    <div class="stat-info">
-                        <h4>Critical Hazards</h4>
-                        <span id="mainStatCritical">0</span>
-                    </div>
-                    <i class="fa-solid fa-triangle-exclamation stat-icon" style="color:#e11d48;"></i>
-                </div>
-
-                <div class="stat-card dispatched">
-                    <div class="stat-info">
-                        <h4>Teams Dispatched</h4>
-                        <span id="mainStatDispatched">0</span>
-                    </div>
-                    <i class="fa-solid fa-truck-field stat-icon" style="color:#d97706;"></i>
-                </div>
-
-                <div class="stat-card resolved">
-                    <div class="stat-info">
-                        <h4>Resolved Issues</h4>
-                        <span id="mainStatResolved">0</span>
-                    </div>
-                    <i class="fa-solid fa-circle-check stat-icon" style="color:#059669;"></i>
-                </div>
-            </div>
-
-            <!-- Full-Width Area Breakdown -->
-            <div class="area-breakdown">
-                <h5 style="margin:0 0 8px 0; font-size:0.85rem; color:#475569; font-weight:600;"><i class="fa-solid fa-location-dot" style="color:#0284c7;"></i> Area-wise Resolution Status:</h5>
-                <div class="area-grid" id="areaGrid">
-                    <!-- Area items injected dynamically -->
-                </div>
-            </div>
+        <!-- Live Complaint Resolution Tracker Section -->
+<div style="background:var(--card-bg, #ffffff); border:1px solid var(--border-color, #e2e8f0); border-radius:16px; padding:20px; margin-top:24px;">
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:16px; align-items:center;">
+        
+        <!-- Title Box -->
+        <div>
+            <h3 style="font-size:1.1rem; font-weight:700; color:var(--text-primary, #0f172a); display:flex; align-items:center; gap:8px;">
+                <i class="fa-solid fa-chart-line" style="color:#0284c7;"></i> Live Complaint Tracker
+            </h3>
+            <span style="font-size:0.75rem; background:#e0f2fe; color:#0284c7; padding:2px 8px; border-radius:10px; font-weight:600; display:inline-block; margin-top:6px;">
+                <i class="fa-solid fa-rotate"></i> Real-time Sync
+            </span>
         </div>
+
+        <!-- Counter 1: Total -->
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:14px; border-radius:12px; text-align:center;">
+            <span style="font-size:0.75rem; font-weight:700; color:#64748b; display:block;">TOTAL COMPLAINTS</span>
+            <strong id="statTotal" style="font-size:1.6rem; color:#0f172a;">0</strong>
+        </div>
+
+        <!-- Counter 2: Critical -->
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:14px; border-radius:12px; text-align:center;">
+            <span style="font-size:0.75rem; font-weight:700; color:#e11d48; display:block;">CRITICAL HAZARDS</span>
+            <strong id="statCritical" style="font-size:1.6rem; color:#e11d48;">0</strong>
+        </div>
+
+        <!-- Counter 3: Dispatched -->
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:14px; border-radius:12px; text-align:center;">
+            <span style="font-size:0.75rem; font-weight:700; color:#d97706; display:block;">TEAMS DISPATCHED</span>
+            <strong id="statDispatched" style="font-size:1.6rem; color:#d97706;">0</strong>
+        </div>
+
+        <!-- Counter 4: Resolved -->
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:14px; border-radius:12px; text-align:center;">
+            <span style="font-size:0.75rem; font-weight:700; color:#059669; display:block;">RESOLVED ISSUES</span>
+            <strong id="statResolved" style="font-size:1.6rem; color:#059669;">0</strong>
+        </div>
+
+    </div>
+
+    <!-- Area-wise Recent Complaints Box -->
+    <div style="margin-top:20px; padding-top:16px; border-top:1px solid #e2e8f0;">
+        <h4 style="font-size:0.9rem; font-weight:700; color:#0f172a; margin-bottom:10px;">
+            <i class="fa-solid fa-location-dot" style="color:#0284c7;"></i> Area-wise Resolution Status:
+        </h4>
+        <div id="complaintsListContainer">
+            <p style="color:#64748b; font-size:0.85rem; margin:0;">Abhi koi active complaint registered nahi hai.</p>
+        </div>
+    </div>
+</div>
+
 
         <!-- Smart System Specializations Section -->
         <div class="section-title spec-title">
@@ -576,6 +584,63 @@
                 `;
             }
         }
-    </script>
-</body>
+    
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        renderLiveTracker();
+    });
+
+    document.addEventListener('DOMContentLoaded', updateIndexTracker);
+
+    function updateIndexTracker() {
+        // LocalStorage se complaint list fetch karein
+        const complaints = JSON.parse(localStorage.getItem('aqua_complaints') || '[]');
+
+        // 1. Calculations
+        const total = complaints.length;
+        const critical = complaints.filter(c => 
+            c.depth === 'severe' || c.depth === 'waist' || c.priority === 'Critical' || c.priority === 'high'
+        ).length;
+        const dispatched = complaints.filter(c => c.status === 'Dispatched' || c.status === 'Under Response').length;
+        const resolved = complaints.filter(c => c.status === 'Resolved').length;
+
+        // 2. Numbers Update Karein
+        if(document.getElementById('statTotal')) document.getElementById('statTotal').innerText = total;
+        if(document.getElementById('statCritical')) document.getElementById('statCritical').innerText = critical;
+        if(document.getElementById('statDispatched')) document.getElementById('statDispatched').innerText = dispatched;
+        if(document.getElementById('statResolved')) document.getElementById('statResolved').innerText = resolved;
+
+        // 3. Status Box List Render Karein
+        const listContainer = document.getElementById('complaintsListContainer');
+        if (listContainer) {
+            if (complaints.length === 0) {
+                listContainer.innerHTML = '<p style="color:#64748b; font-size:0.85rem; margin:0;">Abhi koi active complaint registered nahi hai.</p>';
+            } else {
+                // Latests 3 complaints dikhayega
+                listContainer.innerHTML = complaints.slice(-3).reverse().map(item => {
+                    let isResolved = item.status === 'Resolved';
+                    let isDispatched = item.status === 'Dispatched';
+                    let badgeBg = isResolved ? '#d1fae5' : (isDispatched ? '#fef3c7' : '#ffe4e6');
+                    let badgeColor = isResolved ? '#059669' : (isDispatched ? '#d97706' : '#e11d48');
+
+                    return `
+                        <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:10px 14px; border-radius:10px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+                                <strong style="font-size:0.88rem; color:#0f172a;">${item.id || 'REPORT'}</strong>
+                                <span style="font-size:0.8rem; color:#64748b; margin-left:10px;">
+                                    <i class="fa-solid fa-location-dot" style="color:#0284c7;"></i> ${item.location || 'Live GPS'}
+                                </span>
+                            </div>
+                            <span style="font-size:0.75rem; padding:3px 10px; border-radius:12px; font-weight:bold; background:${badgeBg}; color:${badgeColor};">
+                                ${item.status || 'Pending'}
+                            </span>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+    }
+
+   </script>
+    </body>
 </html>

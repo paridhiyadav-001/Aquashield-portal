@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Complaints - AquaShield</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        // AUTH GUARD: Agar user logged in nahi h, toh login.html par redirect kar do
+        const loggedInUser = JSON.parse(localStorage.getItem('aqua_user') || 'null');
+        if (!loggedInUser) {
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-body: #f8fafc;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --banner-bg: linear-gradient(135deg, #021526 0%, #032541 50%, #0d47a1 100%);
+            --accent-blue: #0284c7;
+        }
+
+        body.dark-theme {
+            --bg-body: #0b0f19;
+            --text-dark: #f8fafc;
+            --text-muted: #94a3b8;
+            --card-bg: #111827;
+            --border-color: #1f2937;
+            --banner-bg: linear-gradient(135deg, #030712 0%, #0f172a 100%);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-dark); transition: background 0.3s; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px 16px; }
+
+        /* Navbar */
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background: var(--card-bg); border-bottom: 1px solid var(--border-color); }
+        .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.2rem; color: #0284c7; }
+        .nav-links { display: flex; align-items: center; gap: 20px; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--text-muted); font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+        .nav-links a.active { color: var(--accent-blue); }
+        .theme-btn { background: #f1f5f9; border: none; padding: 8px 12px; border-radius: 50%; cursor: pointer; color: var(--text-dark); }
+        body.dark-theme .theme-btn { background: #1e293b; color: #f8fafc; }
+
+        /* Banner Card */
+        .banner-card { background: var(--banner-bg); border-radius: 16px; padding: 32px 28px; color: #ffffff; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .tag-pill { background: rgba(255, 255, 255, 0.15); padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+        .banner-title { font-size: 2rem; font-weight: 800; margin-bottom: 6px; }
+        .banner-subtitle { font-size: 0.9rem; opacity: 0.8; max-width: 500px; }
+        .btn-register { background: #0ea5e9; color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.9rem; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+        .btn-register:hover { background: #0284c7; }
+
+        /* Profile Card with Logout */
+        .user-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+        .user-details { display: flex; align-items: center; gap: 16px; }
+        .user-avatar { width: 50px; height: 50px; border-radius: 50%; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+        .user-info h3 { font-size: 1.1rem; font-weight: 700; }
+        .user-info p { font-size: 0.85rem; color: var(--text-muted); }
+        .btn-logout { background: #ffe4e6; color: #e11d48; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: 0.2s; }
+        .btn-logout:hover { background: #fecdd3; }
+
+        /* Stats Grid */
+        .section-header { margin-bottom: 16px; }
+        .section-header h2 { font-size: 1.25rem; font-weight: 700; }
+        .section-header p { font-size: 0.85rem; color: var(--text-muted); }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 32px; }
+        .stat-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 14px; padding: 20px; }
+        .stat-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; margin-bottom: 16px; }
+        .icon-blue { background: #e0f2fe; color: #0284c7; }
+        .icon-sky { background: #e0f2fe; color: #0ea5e9; }
+        .icon-amber { background: #fef3c7; color: #d97706; }
+        .icon-green { background: #d1fae5; color: #059669; }
+        .stat-val { font-size: 1.5rem; font-weight: 800; margin-bottom: 4px; }
+        .stat-label { font-size: 0.82rem; color: var(--text-muted); }
+
+        /* Table Container */
+        .table-container { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; overflow-x: auto; margin-bottom: 24px; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem; }
+        th, td { padding: 14px 18px; border-bottom: 1px solid var(--border-color); }
+        th { background: rgba(0,0,0,0.02); color: var(--text-muted); font-weight: 600; }
+
+        .empty-box { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 48px 20px; text-align: center; margin-bottom: 24px; }
+        .empty-icon { width: 60px; height: 60px; border-radius: 50%; background: #e0f2fe; color: #0284c7; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.5rem; }
+
+        .info-alert { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 14px; padding: 16px 20px; display: flex; gap: 14px; align-items: flex-start; color: #0369a1; font-size: 0.85rem; margin-bottom: 24px; }
+        body.dark-theme .info-alert { background: #0c4a6e22; border-color: #0369a1; color: #7dd3fc; }
+
+        .back-link { text-align: center; margin-top: 10px; }
+        .back-link a { text-decoration: none; color: #0284c7; font-weight: 600; font-size: 0.9rem; }
+
+        @media (max-width: 768px) {
+            .banner-card { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .btn-register { width: 100%; justify-content: center; }
+            .user-card { flex-direction: column; align-items: flex-start; gap: 16px; }
+            .btn-logout { width: 100%; justify-content: center; }
+            .nav-links span { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <header class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>AquaShield</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fa-solid fa-house"></i> <span>Home</span></a></li>
+            <li><a href="report.html"><i class="fa-solid fa-circle-plus"></i> <span>Register Complaint</span></a></li>
+            <li><a href="profile.html" class="active"><i class="fa-solid fa-user"></i> <span>My Complaints</span></a></li>
+            <li>
+                <button class="theme-btn" onclick="toggleTheme()">
+                    <i id="themeIcon" class="fa-solid fa-moon"></i>
+                </button>
+            </li>
+        </ul>
+    </header>
+
+    <div class="container">
+        
+        <!-- Banner Card -->
+        <div class="banner-card">
+            <div>
+                <span class="tag-pill"><i class="fa-solid fa-location-dot"></i> Citizen Complaint Tracking</span>
+                <h1 class="banner-title">My Complaints</h1>
+                <p class="banner-subtitle">Track your registered waterlogging and flood-related complaints and monitor their current status.</p>
+            </div>
+            <button class="btn-register" onclick="window.location.href='report.html'">
+                <i class="fa-solid fa-plus"></i> Register New Complaint
+            </button>
+        </div>
+
+        <!-- User Profile Strip -->
+        <div class="user-card">
+            <div class="user-details">
+                <div class="user-avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <h3 id="displayUserName">Citizen User</h3>
+                    <p id="displayUserEmail">AquaShield Citizen Account</p>
+                </div>
+            </div>
+            <button class="btn-logout" onclick="logoutUser()">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+        </div>
+
+        <!-- Stats Overview Header -->
+        <div class="section-header">
+            <h2>Complaint Overview</h2>
+            <p>Current AquaShield complaint statistics</p>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon icon-blue"><i class="fa-solid fa-file-lines"></i></div>
+                <div class="stat-val" id="mainStatTotal">0</div>
+                <div class="stat-label">Total complaints</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-sky"><i class="fa-solid fa-inbox"></i></div>
+                <div class="stat-val" id="mainStatCritical">0</div>
+                <div class="stat-label">Critical Priority</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-amber"><i class="fa-solid fa-rotate"></i></div>
+                <div class="stat-val" id="mainStatDispatched">0</div>
+                <div class="stat-label">Under response</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-green"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="stat-val" id="mainStatResolved">0</div>
+                <div class="stat-label">Resolved</div>
+            </div>
+        </div>
+
+        <!-- Complaints Table Header -->
+        <div class="section-header">
+            <h2><i class="fa-solid fa-list-check"></i> Your Complaints</h2>
+            <p>Track the complaints registered through AquaShield.</p>
+        </div>
+
+        <!-- Live Complaint List Container -->
+        <div id="userComplaintsContainer"></div>
+
+        <!-- Info Alert -->
+        <div class="info-alert" style="margin-top:24px;">
+            <i class="fa-solid fa-circle-info" style="font-size: 1.2rem; margin-top:2px;"></i>
+            <div>
+                <strong>How AquaShield complaint tracking works</strong>
+                <p style="margin-top:2px;">Submit your complaint through AquaShield AI. The AI analyses the problem, identifies the appropriate department and priority, and forwards the complaint to the Authority Dashboard.</p>
+            </div>
+        </div>
+
+        <div class="back-link">
+            <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to AquaShield Home</a>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Set Logged In User Info & Render Complaints
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('aqua_user') || '{}');
+            if (user.name) document.getElementById('displayUserName').innerText = user.name;
+            if (user.email) document.getElementById('displayUserEmail').innerText = user.email;
+
+            renderUserComplaints();
+        });
+
+        // Logout Functionality
+        function logoutUser() {
+            localStorage.removeItem('aqua_user');
+            window.location.href = 'login.html';
+        }
+
+        // Render Complaints Table
+        function renderUserComplaints() {
+            const container = document.getElementById('userComplaintsContainer');
+            if (!container) return;
+
+            let complaints = JSON.parse(localStorage.getItem('aqua_complaints') || '[]');
+
+            if (complaints.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-box">
+                        <div class="empty-icon"><i class="fa-solid fa-file-circle-question"></i></div>
+                        <h3>No complaints found</h3>
+                        <p>Register a complaint through AquaShield AI to see it here.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Report ID</th>
+                                <th>Type</th>
+                                <th>Depth</th>
+                                <th>Location</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${complaints.map(item => {
+                                let isResolved = item.status === 'Resolved';
+                                let isDispatched = item.status === 'Dispatched';
+                                return `
+                                    <tr>
+                                        <td><strong>${item.id}</strong></td>
+                                        <td style="text-transform:capitalize;">${item.type ? item.type.replace(/_/g, ' ') : 'Waterlogging'}</td>
+                                        <td><span style="color:${(item.depth === 'severe' || item.depth === 'waist') ? '#e11d48' : '#0284c7'}; font-weight:600;">${item.depth || 'Normal'}</span></td>
+                                        <td><code style="background:#e0f2fe; padding:2px 6px; border-radius:4px; color:#0284c7;">${item.location || 'Live GPS'}</code></td>
+                                        <td>${item.timestamp || 'Just now'}</td>
+                                        <td>
+                                            <span style="padding:4px 10px; border-radius:12px; font-size:0.75rem; font-weight:bold; background:${isResolved ? '#d1fae5' : (isDispatched ? '#fef3c7' : '#ffe4e6')}; color:${isResolved ? '#059669' : (isDispatched ? '#d97706' : '#e11d48')};">
+                                                ${item.status || 'Pending'}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

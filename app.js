@@ -365,7 +365,6 @@ function loadComplaintStats() {
     const legacyTotal = document.getElementById('statTotal');
     const legacySolved = document.getElementById('statSolved');
     const legacyPending = document.getElementById('statPending');
-    
     const areaGrid = document.getElementById('areaGrid');
 
     let complaints = JSON.parse(localStorage.getItem('aqua_complaints') || '[]');
