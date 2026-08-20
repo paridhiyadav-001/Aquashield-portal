@@ -18,69 +18,98 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
+        .stats-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .stats-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 4 Horizontal Cards Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 15px;
-            margin-top: 15px;
+            margin-bottom: 20px;
         }
 
         .stat-card {
             background: #f8fafc;
             border-radius: 10px;
-            padding: 15px;
-            border-left: 4px solid #cbd5e1;
+            padding: 16px;
+            border: 1px solid #e2e8f0;
+            border-top: 4px solid #cbd5e1;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            transition: transform 0.2s ease;
         }
 
-        .stat-card.total { border-left-color: #0284c7; }
-        .stat-card.critical { border-left-color: #e11d48; }
-        .stat-card.dispatched { border-left-color: #d97706; }
-        .stat-card.resolved { border-left-color: #059669; }
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-card.total { border-top-color: #0284c7; background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 100%); }
+        .stat-card.critical { border-top-color: #e11d48; background: linear-gradient(180deg, #fff1f2 0%, #ffffff 100%); }
+        .stat-card.dispatched { border-top-color: #d97706; background: linear-gradient(180deg, #fffbeb 0%, #ffffff 100%); }
+        .stat-card.resolved { border-top-color: #059669; background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%); }
 
         .stat-info h4 {
-            margin: 0;
-            font-size: 0.8rem;
+            margin: 0 0 4px 0;
+            font-size: 0.75rem;
             color: #64748b;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-weight: 700;
         }
 
         .stat-info span {
-            font-size: 1.6rem;
+            font-size: 1.7rem;
             font-weight: 700;
             color: #0f172a;
+            line-height: 1;
         }
 
         .stat-icon {
-            font-size: 1.8rem;
-            opacity: 0.8;
+            font-size: 1.7rem;
+            opacity: 0.85;
         }
 
         /* Area Breakdown List */
         .area-breakdown {
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px dashed #e2e8f0;
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 15px 18px;
+            border: 1px dashed #cbd5e1;
         }
 
         .area-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             gap: 10px;
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
         .area-item {
-            background: #f1f5f9;
+            background: #ffffff;
             padding: 10px 12px;
             border-radius: 8px;
             font-size: 0.85rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border: 1px solid #e2e8f0;
         }
 
         .badge-solved { background: #dcfce7; color: #15803d; padding: 2px 8px; border-radius: 12px; font-weight: 600; font-size: 0.75rem; }
@@ -171,7 +200,11 @@
         .response-view { display: none; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; margin-top: 10px; font-size: 0.82rem; color: #334155; line-height: 1.5; }
         .back-link { color: #0284c7; font-size: 0.78rem; font-weight: 600; cursor: pointer; display: inline-block; margin-bottom: 8px; }
 
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 576px) {
+            .stats-grid { grid-template-columns: 1fr; }
             .aqua-widget-card { width: 300px; right: 15px; bottom: 80px; }
             .aqua-assistant-btn { right: 15px; bottom: 20px; }
         }
@@ -211,13 +244,56 @@
     <!-- Main Content Container -->
     <main class="container">
 
-        <!-- 📊 LIVE COMPLAINTS RESOLUTION STATS SECTION -->
-        <div class="stats-container">
-            <div class="section-title" style="margin-bottom:10px;">
-                <h3><i class="fa-solid fa-chart-pie" style="color:#0284c7;"></i> Live Complaint Resolution Tracker</h3>
+        <!-- 1. CORE SERVICES GRID -->
+        <div class="section-title">
+            <h3><i class="fa-solid fa-cubes"></i> Core Services & Portals</h3>
+        </div>
+
+        <div class="services-grid">
+            <div class="card card-green">
+                <div class="card-icon icon-green"><i class="fa-solid fa-route"></i></div>
+                <span class="sub-label">FOR CITIZENS</span>
+                <h4>Safe Route Finder</h4>
+                <p>Real-time flood-free road routes and waterlogging bypass guidance.</p>
+                <button class="btn btn-green" onclick="handleProtectedNavigation('gis-map.html')">Open GIS Route Map <i class="fa-solid fa-arrow-right"></i></button>
             </div>
 
-            <!-- Authority Style 4 Stats Counters -->
+            <div class="card card-blue">
+                <div class="card-icon icon-blue"><i class="fa-solid fa-bullhorn"></i></div>
+                <span class="sub-label">CITIZEN REPORTING</span>
+                <h4>Report Waterlogging</h4>
+                <p>File waterlogging, blocked drains, or open manhole hazards with live GPS.</p>
+                <button class="btn btn-blue" onclick="handleProtectedNavigation('report.html')"><i class="fa-solid fa-pen-to-square"></i> File Complaint</button>
+            </div>
+
+            <div class="card card-red">
+                <div class="card-icon icon-red"><i class="fa-solid fa-truck-medical"></i></div>
+                <span class="sub-label">EMERGENCY SERVICES</span>
+                <h4>Ambulance service</h4>
+                <p>Priority emergency route access & direct hotline connectivity.</p>
+                <button class="btn btn-red" onclick="window.location.href='ambulance.html'"><i class="fa-solid fa-truck-medical"></i> Ambulance SOS</button>
+            </div>
+
+            <div class="card card-orange">
+                <div class="card-badge">Restricted</div>
+                <div class="card-icon icon-orange"><i class="fa-solid fa-user-shield"></i></div>
+                <span class="sub-label">MUNICIPAL / PWD</span>
+                <h4>Authority Portal</h4>
+                <p>Official personnel login for dispatch, GIS heatmaps & team assignments.</p>
+                <button class="btn btn-dark" onclick="window.location.href='officer-login.html'"><i class="fa-solid fa-lock"></i> Official Officer Login</button>
+            </div>
+        </div>
+
+        <!-- 2. 📊 LIVE COMPLAINTS RESOLUTION STATS SECTION (Clean Horizontal Row) -->
+        <div class="stats-container" style="margin-top: 30px;">
+            <div class="stats-header">
+                <h3><i class="fa-solid fa-chart-pie" style="color:#0284c7;"></i> Live Complaint Resolution Tracker</h3>
+                <span style="font-size:0.75rem; color:#64748b; background:#f1f5f9; padding:4px 10px; border-radius:12px; font-weight:500;">
+                    <i class="fa-solid fa-arrows-rotate"></i> Real-time Sync
+                </span>
+            </div>
+
+            <!-- 4 Cards Horizontal Grid -->
             <div class="stats-grid">
                 <div class="stat-card total">
                     <div class="stat-info">
@@ -252,52 +328,12 @@
                 </div>
             </div>
 
-            <!-- Area Wise Status -->
+            <!-- Full-Width Area Breakdown -->
             <div class="area-breakdown">
-                <h5 style="margin:0 0 10px 0; font-size:0.85rem; color:#475569;"><i class="fa-solid fa-location-dot"></i> Area-wise Resolution Status:</h5>
+                <h5 style="margin:0 0 8px 0; font-size:0.85rem; color:#475569; font-weight:600;"><i class="fa-solid fa-location-dot" style="color:#0284c7;"></i> Area-wise Resolution Status:</h5>
                 <div class="area-grid" id="areaGrid">
                     <!-- Area items injected dynamically -->
                 </div>
-            </div>
-        </div>
-
-        <div class="section-title">
-            <h3><i class="fa-solid fa-cubes"></i> Core Services & Portals</h3>
-        </div>
-
-        <!-- Core Services Grid -->
-        <div class="services-grid">
-            <div class="card card-green">
-                <div class="card-icon icon-green"><i class="fa-solid fa-route"></i></div>
-                <span class="sub-label">FOR CITIZENS</span>
-                <h4>Safe Route Finder</h4>
-                <p>Real-time flood-free road routes and waterlogging bypass guidance.</p>
-                <button class="btn btn-green" onclick="handleProtectedNavigation('gis-map.html')">Open GIS Route Map <i class="fa-solid fa-arrow-right"></i></button>
-            </div>
-
-            <div class="card card-blue">
-                <div class="card-icon icon-blue"><i class="fa-solid fa-bullhorn"></i></div>
-                <span class="sub-label">CITIZEN REPORTING</span>
-                <h4>Report Waterlogging</h4>
-                <p>File waterlogging, blocked drains, or open manhole hazards with live GPS.</p>
-                <button class="btn btn-blue" onclick="handleProtectedNavigation('report.html')"><i class="fa-solid fa-pen-to-square"></i> File Complaint</button>
-            </div>
-
-            <div class="card card-red">
-                <div class="card-icon icon-red"><i class="fa-solid fa-truck-medical"></i></div>
-                <span class="sub-label">EMERGENCY SERVICES</span>
-                <h4>Ambulance service</h4>
-                <p>Priority emergency route access & direct hotline connectivity.</p>
-                <button class="btn btn-red" onclick="window.location.href='ambulance.html'"><i class="fa-solid fa-truck-medical"></i> Ambulance SOS</button>
-            </div>
-
-            <div class="card card-orange">
-                <div class="card-badge">Restricted</div>
-                <div class="card-icon icon-orange"><i class="fa-solid fa-user-shield"></i></div>
-                <span class="sub-label">MUNICIPAL / PWD</span>
-                <h4>Authority Portal</h4>
-                <p>Official personnel login for dispatch, GIS heatmaps & team assignments.</p>
-                <button class="btn btn-dark" onclick="window.location.href='officer-login.html'"><i class="fa-solid fa-lock"></i> Official Officer Login</button>
             </div>
         </div>
 
@@ -470,7 +506,7 @@
             // Area Grid Build
             let areaGridHTML = '';
             if (total === 0) {
-                areaGridHTML = '<p style="color:#64748b; font-size:0.85rem; margin:5px 0;">Abhi koi active complaint registered nahi hai.</p>';
+                areaGridHTML = '<p style="color:#64748b; font-size:0.85rem; margin:0;">Abhi koi active complaint registered nahi hai.</p>';
             } else {
                 for (let area in areaMap) {
                     let s = areaMap[area].solved;
